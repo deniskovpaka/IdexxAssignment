@@ -17,6 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
+        <feign-jackson.version>8.18.0</feign-jackson.version>
     </properties>
 
     <dependencies>
@@ -28,6 +29,25 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- Tomcat Embed todo need to remove -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- JSTL -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <!-- To compile JSP files -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -58,7 +78,7 @@
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-jackson</artifactId>
-            <version>8.18.0</version>
+            <version>${feign-jackson.version}</version>
         </dependency>
     </dependencies>
 

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @AllArgsConstructor
-public class FacadeController {
+public class SearchController {
     private final AlbumService albumService;
     private final BookService bookService;
 
@@ -22,6 +22,7 @@ public class FacadeController {
         AlbumResultDto albums = albumService.getAlbums(term);
         BookResultDto books = bookService.getBooks(term);
         model.addAttribute("attribute", "123445");
-        return new ModelAndView("result", model);
+//        return new ModelAndView("result", model);
+        return new ModelAndView("hello", model);
     }
 }

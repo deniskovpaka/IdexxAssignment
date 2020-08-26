@@ -11,7 +11,7 @@ public class BookService {
     private final BookClient bookClient;
     private final ConfigProperties configProperties;
 
-    public BookResultDto getBooks(String query) {
-        return bookClient.getAlbums(query, configProperties.getLimit());
+    public BookResultDto getBooks(String q) {
+        return bookClient.getBooks(q, configProperties.getLimit());
     }
 }
