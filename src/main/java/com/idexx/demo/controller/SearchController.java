@@ -17,12 +17,20 @@ public class SearchController {
     private final AlbumService albumService;
     private final BookService bookService;
 
+    @GetMapping("/")
+    public ModelAndView welcomePage() {
+        ModelMap model = new ModelMap();
+        model.addAttribute("message", "Welcome page");
+        return new ModelAndView("welcomePage", model);
+//        return "welcomePage";
+    }
+
     @GetMapping("/search")
     public ModelAndView search(@RequestParam String term, ModelMap model) {
         AlbumResultDto albums = albumService.getAlbums(term);
         BookResultDto books = bookService.getBooks(term);
         model.addAttribute("attribute", "123445");
 //        return new ModelAndView("result", model);
-        return new ModelAndView("hello", model);
+        return new ModelAndView("searchResult", model);
     }
 }
