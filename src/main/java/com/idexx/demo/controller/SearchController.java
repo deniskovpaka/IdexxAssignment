@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,10 +31,11 @@ public class SearchController {
     public ModelAndView search(@RequestParam String term, ModelMap model) {
         List<SearchResultDto> albums = albumService.getAlbums(term);
         List<SearchResultDto> books = bookService.getBooks(term);
-        List<SearchResultDto> combinedList = Stream.of(albums, books) // todo move to util class
+        List<SearchResultDto> searchResult = Stream.of(albums, books) // todo move to util class
                 .flatMap(Collection::stream)
+                .sorted(Comparator.comparing(SearchResultDto::getTitle))
                 .collect(Collectors.toList());
-        model.addAttribute("result", "123445");
+        model.addAttribute("searchResult", searchResult);
         return new ModelAndView("searchResult", model);
     }
 }
