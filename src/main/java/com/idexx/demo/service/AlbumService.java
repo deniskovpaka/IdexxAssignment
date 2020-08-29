@@ -1,5 +1,6 @@
 package com.idexx.demo.service;
 
+import com.idexx.demo.client.AlbumClient;
 import com.idexx.demo.config.ConfigProperties;
 import com.idexx.demo.dto.AlbumResultDto;
 import com.idexx.demo.dto.SearchResultDto;

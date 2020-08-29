@@ -41,6 +41,7 @@ class SearchControllerTest {
         Mockito.when(bookService.getBooks(anyString())).thenReturn(searchResultList);
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/search?term=Java"));
+
         ModelAndView modelAndViewResult = resultActions.andReturn().getModelAndView();
         assertEquals(SEARCH_RESULT, modelAndViewResult.getViewName());
         List<SearchResultDto> resultList = (List<SearchResultDto>) modelAndViewResult.getModelMap().getAttribute(SEARCH_RESULT);

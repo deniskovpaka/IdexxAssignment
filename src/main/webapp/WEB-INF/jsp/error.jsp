@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-<h1>Exception Page</h1>
+<h1>Exception Page. Please, reenter your search criteria! </h1>
 <table>
     <tr>
         <td>Date</td>

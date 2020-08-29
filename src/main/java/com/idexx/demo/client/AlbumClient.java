@@ -1,4 +1,4 @@
-package com.idexx.demo.service;
+package com.idexx.demo.client;
 
 import com.idexx.demo.config.FeignClientConfig;
 import com.idexx.demo.dto.AlbumResultDto;
