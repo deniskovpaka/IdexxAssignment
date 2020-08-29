@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 @RestController
 @AllArgsConstructor
 public class SearchController {
+    public static final String SEARCH_RESULT = "searchResult";
     private final AlbumService albumService;
     private final BookService bookService;
 
@@ -35,7 +36,7 @@ public class SearchController {
                 .flatMap(Collection::stream)
                 .sorted(Comparator.comparing(SearchResultDto::getTitle))
                 .collect(Collectors.toList());
-        model.addAttribute("searchResult", searchResult);
-        return new ModelAndView("searchResult", model);
+        model.addAttribute(SEARCH_RESULT, searchResult);
+        return new ModelAndView(SEARCH_RESULT, model);
     }
 }
