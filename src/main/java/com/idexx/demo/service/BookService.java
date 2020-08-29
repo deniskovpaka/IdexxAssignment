@@ -3,11 +3,13 @@ package com.idexx.demo.service;
 import com.idexx.demo.config.ConfigProperties;
 import com.idexx.demo.dto.BookResultDto;
 import com.idexx.demo.dto.SearchResultDto;
+import com.idexx.demo.exception.SearchResultException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,6 +22,9 @@ public class BookService {
 
     public List<SearchResultDto> getBooks(String q) {
         BookResultDto books = bookClient.getBooks(q, configProperties.getLimit());
+        if (Objects.isNull(books.getItems())) {
+            throw new SearchResultException(q);
+        }
         return books.getItems()
                 .stream()
                 .map(bookDto -> new SearchResultDto(bookDto.getVolumeInfo().getTitle(),
