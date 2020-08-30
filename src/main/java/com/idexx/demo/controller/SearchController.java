@@ -1,5 +1,6 @@
 package com.idexx.demo.controller;
 
+import com.idexx.demo.config.ConfigProperties;
 import com.idexx.demo.dto.SearchResultDto;
 import com.idexx.demo.service.AlbumService;
 import com.idexx.demo.service.BookService;
@@ -28,6 +29,7 @@ public class SearchController {
 
     private final AlbumService albumService;
     private final BookService bookService;
+    private final ConfigProperties configProperties;
 
     @GetMapping(WELCOME_PAGE_URI)
     public ModelAndView welcomePage() {
@@ -42,8 +44,8 @@ public class SearchController {
             value = "search input",
             example = "Java",
             required = true) @RequestParam String term) {
-        List<SearchResultDto> albums = albumService.getAlbums(term);
-        List<SearchResultDto> books = bookService.getBooks(term);
+        List<SearchResultDto> albums = albumService.getAlbums(term, configProperties.getLimit());
+        List<SearchResultDto> books = bookService.getBooks(term, configProperties.getLimit());
         List<SearchResultDto> searchResult = Stream.of(albums, books) // todo move to util class
                 .flatMap(Collection::stream)
                 .sorted(Comparator.comparing(SearchResultDto::getTitle))

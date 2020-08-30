@@ -1,5 +1,6 @@
 package com.idexx.demo.controller;
 
+import com.idexx.demo.config.ConfigProperties;
 import com.idexx.demo.dto.SearchResultDto;
 import com.idexx.demo.service.AlbumService;
 import com.idexx.demo.service.BookService;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import static com.idexx.demo.controller.SearchController.SEARCH_RESULT_MODEL_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @WebMvcTest(SearchController.class)
@@ -32,13 +34,16 @@ class SearchControllerTest {
     private AlbumService albumService;
     @MockBean
     private BookService bookService;
+    @MockBean
+    private ConfigProperties configProperties;
 
     @Test
     public void getSearchResultList() throws Exception {
         List<SearchResultDto> searchResultList = List.of(createSearchResultDto(1));
 
-        Mockito.when(albumService.getAlbums(anyString())).thenReturn(searchResultList);
-        Mockito.when(bookService.getBooks(anyString())).thenReturn(searchResultList);
+        Mockito.when(configProperties.getLimit()).thenReturn(1);
+        Mockito.when(albumService.getAlbums(anyString(), anyInt())).thenReturn(searchResultList);
+        Mockito.when(bookService.getBooks(anyString(), anyInt())).thenReturn(searchResultList);
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/search?term=Java"));
 

@@ -1,8 +1,8 @@
 package com.idexx.demo.service;
 
 import com.idexx.demo.client.AlbumClient;
-import com.idexx.demo.config.ConfigProperties;
 import com.idexx.demo.dto.AlbumResultDto;
+import com.idexx.demo.dto.SearchProduct;
 import com.idexx.demo.dto.SearchResultDto;
 import com.idexx.demo.exception.SearchResultException;
 import lombok.AllArgsConstructor;
@@ -15,18 +15,16 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class AlbumService {
-    private static final String ALBUM = "Album";
     private final AlbumClient albumClient;
-    private final ConfigProperties configProperties;
 
-    public List<SearchResultDto> getAlbums(String term) {
-        AlbumResultDto albums = albumClient.getAlbums(term, configProperties.getLimit());
+    public List<SearchResultDto> getAlbums(String term, int limit) {
+        AlbumResultDto albums = albumClient.getAlbums(term, limit);
         if (Objects.isNull(albums.getResultCount()) || Objects.isNull(albums.getResults())) {
             throw new SearchResultException(term);
         }
         return albums.getResults()
                 .stream()
-                .map(albumDto -> new SearchResultDto(albumDto.getTrackName(), albumDto.getArtistName(), ALBUM))
+                .map(albumDto -> new SearchResultDto(albumDto.getTrackName(), albumDto.getArtistName(), SearchProduct.ALBUM.name()))
                 .collect(Collectors.toList());
     }
 }
