@@ -4,6 +4,7 @@ import com.idexx.demo.config.ConfigProperties;
 import com.idexx.demo.dto.SearchResultDto;
 import com.idexx.demo.service.AlbumService;
 import com.idexx.demo.service.BookService;
+import com.idexx.demo.util.UtilsTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 import static com.idexx.demo.controller.SearchController.SEARCH_RESULT_MODEL_NAME;
+import static com.idexx.demo.util.UtilsTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @WebMvcTest(SearchController.class)
 class SearchControllerTest {
-    public static final String SEARCH_TITLE = "title";
-    public static final String SEARCH_CREATOR = "creator";
-    public static final String SEARCH_PRODUCT = "product";
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -39,7 +37,7 @@ class SearchControllerTest {
 
     @Test
     public void getSearchResultList() throws Exception {
-        List<SearchResultDto> searchResultList = List.of(createSearchResultDto(1));
+        List<SearchResultDto> searchResultList = List.of(UtilsTest.createSearchResultDto(1));
 
         Mockito.when(configProperties.getLimit()).thenReturn(1);
         Mockito.when(albumService.getAlbums(anyString(), anyInt())).thenReturn(searchResultList);
@@ -56,13 +54,5 @@ class SearchControllerTest {
             assertEquals(SEARCH_CREATOR + 1, resultDto.getCreator());
             assertEquals(SEARCH_PRODUCT + 1, resultDto.getProduct());
         }
-    }
-
-    private SearchResultDto createSearchResultDto(int number) {
-        return SearchResultDto.builder()
-                .title(SEARCH_TITLE + number)
-                .creator(SEARCH_CREATOR + number)
-                .product(SEARCH_PRODUCT + number)
-                .build();
     }
 }
