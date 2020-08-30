@@ -1,11 +1,9 @@
 package com.idexx.demo.util;
 
-import com.idexx.demo.dto.AlbumResultDto;
-import com.idexx.demo.dto.BookResultDto;
-import com.idexx.demo.dto.SearchProduct;
-import com.idexx.demo.dto.SearchResultDto;
+import com.idexx.demo.dto.*;
 import com.idexx.demo.exception.SearchResultException;
 import lombok.experimental.UtilityClass;
+import org.apache.logging.log4j.util.Strings;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,6 +11,8 @@ import java.util.stream.Stream;
 
 @UtilityClass
 public class Utils {
+    public final String NOT_AVAILABLE = "N/A";
+
     public List<SearchResultDto> mergeSearchResultsDto(List<SearchResultDto> first, List<SearchResultDto> second) {
         if (first.size() == 0 && second.size() == 0) {
             throw new SearchResultException();
@@ -26,27 +26,21 @@ public class Utils {
     }
 
     public List<SearchResultDto> fromBookResultDto(BookResultDto bookResultDto) {
-        return Optional.ofNullable(bookResultDto.getItems()
-                .stream()
-                .map(bookDto -> new SearchResultDto(bookDto.getVolumeInfo().getTitle(),
-                        Optional.ofNullable(bookDto.getVolumeInfo().getAuthors()).orElseGet(LinkedList::new).toString(),
+        List<BookDto> bookDtos = Optional.ofNullable(bookResultDto.getItems()).orElseGet(LinkedList::new);
+        return bookDtos.stream()
+                .map(bookDto -> new SearchResultDto(Optional.ofNullable(bookDto.getVolumeInfo().getTitle()).orElse(NOT_AVAILABLE),
+                        Optional.ofNullable(bookDto.getVolumeInfo().getAuthors()).orElse(List.of(NOT_AVAILABLE))
+                                .toString().replace("[", Strings.EMPTY).replace("]", Strings.EMPTY),
                         SearchProduct.BOOK.name()))
-                .collect(Collectors.toList()))
-                .orElseGet(LinkedList::new);
+                .collect(Collectors.toList());
     }
 
     public List<SearchResultDto> fromAlbumResultDto(AlbumResultDto albumResultDto) {
-        return Optional.ofNullable(albumResultDto.getResults().stream()
-                .map(albumDto -> new SearchResultDto(Optional.ofNullable(albumDto.getTrackName()).orElseGet(String::new),
-                        albumDto.getArtistName(),
+        List<AlbumDto> albumDtos = Optional.ofNullable(albumResultDto.getResults()).orElseGet(LinkedList::new);
+        return albumDtos.stream()
+                .map(albumDto -> new SearchResultDto(Optional.ofNullable(albumDto.getTrackName()).orElse(NOT_AVAILABLE),
+                        Optional.ofNullable(albumDto.getArtistName()).orElse(NOT_AVAILABLE),
                         SearchProduct.ALBUM.name()))
-                .collect(Collectors.toList()))
-                .orElseGet(LinkedList::new);
-//        return albumResultDto.getResults()
-//                .stream()
-//                .map(albumDto -> new SearchResultDto(Optional.ofNullable(albumDto.getTrackName()).orElseGet(String::new),
-//                        albumDto.getArtistName(),
-//                        SearchProduct.ALBUM.name()))
-//                .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 }
