@@ -1,6 +1,6 @@
 ### Idexx Assignment
 SearchService provides an API resource to fetch albums and books by search criteria.
-There two endpoints from where the search data is received:
+There are two endpoints from where the search data is received:
 1. [iTunes API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/)
 2. [Google Books API](https://developers.google.com/books/docs/v1/reference/volumes/list)
 
@@ -8,7 +8,7 @@ The searched data is displayed using a pre-configured limit for each environment
 Change the `limit.search` in the application-*.properties files for configuring this variable, by default it is 5
 
 #### Prerequisites
-- Java 14
+- Java 11
 - run `mvn -N io.takari:maven:wrapper` command from the main folder in project
 
 #### To build the application

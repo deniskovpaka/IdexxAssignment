@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-import static com.idexx.demo.controller.SearchController.SEARCH_RESULT;
+import static com.idexx.demo.controller.SearchController.SEARCH_RESULT_MODEL_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -43,8 +43,8 @@ class SearchControllerTest {
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/search?term=Java"));
 
         ModelAndView modelAndViewResult = resultActions.andReturn().getModelAndView();
-        assertEquals(SEARCH_RESULT, modelAndViewResult.getViewName());
-        List<SearchResultDto> resultList = (List<SearchResultDto>) modelAndViewResult.getModelMap().getAttribute(SEARCH_RESULT);
+        assertEquals(SEARCH_RESULT_MODEL_NAME, modelAndViewResult.getViewName());
+        List<SearchResultDto> resultList = (List<SearchResultDto>) modelAndViewResult.getModelMap().getAttribute(SEARCH_RESULT_MODEL_NAME);
         assertEquals(2, resultList.size());
         for (SearchResultDto resultDto : resultList) {
             assertEquals(SEARCH_TITLE + 1, resultDto.getTitle());

@@ -3,6 +3,8 @@ package com.idexx.demo.controller;
 import com.idexx.demo.dto.SearchResultDto;
 import com.idexx.demo.service.AlbumService;
 import com.idexx.demo.service.BookService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,24 +21,35 @@ import java.util.stream.Stream;
 @RestController
 @AllArgsConstructor
 public class SearchController {
-    public static final String SEARCH_RESULT = "searchResult";
+    public static final String SEARCH_URI = "/search";
+    public static final String WELCOME_PAGE_URI = "/";
+    public static final String SEARCH_RESULT_MODEL_NAME = "searchResult";
+    public static final String WELCOME_PAGE_MODEL_NAME = "welcomePage";
+
     private final AlbumService albumService;
     private final BookService bookService;
 
-    @GetMapping("/")
+    @GetMapping(WELCOME_PAGE_URI)
     public ModelAndView welcomePage() {
-        return new ModelAndView("welcomePage");
+        return new ModelAndView(WELCOME_PAGE_MODEL_NAME);
     }
 
-    @GetMapping("/search")
-    public ModelAndView search(@RequestParam String term, ModelMap model) {
+    @ApiOperation(value = "search API", notes = "Search books and albums by search criteria")
+    @GetMapping(SEARCH_URI)
+    public ModelAndView search(@ApiParam(
+            name = "term",
+            type = "String",
+            value = "search input",
+            example = "Java",
+            required = true) @RequestParam String term) {
         List<SearchResultDto> albums = albumService.getAlbums(term);
         List<SearchResultDto> books = bookService.getBooks(term);
         List<SearchResultDto> searchResult = Stream.of(albums, books) // todo move to util class
                 .flatMap(Collection::stream)
                 .sorted(Comparator.comparing(SearchResultDto::getTitle))
                 .collect(Collectors.toList());
-        model.addAttribute(SEARCH_RESULT, searchResult);
-        return new ModelAndView(SEARCH_RESULT, model);
+        ModelMap model = new ModelMap();
+        model.addAttribute(SEARCH_RESULT_MODEL_NAME, searchResult);
+        return new ModelAndView(SEARCH_RESULT_MODEL_NAME, model);
     }
 }
