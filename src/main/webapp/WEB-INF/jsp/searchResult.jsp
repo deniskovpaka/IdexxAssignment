@@ -12,7 +12,7 @@
         <div class="row text-center"><strong>Search details</strong></div>
         <div class="row" style="border:1px solid green;padding:10px">
             <div class="col-md-4 text-center"><strong>Title</strong></div>
-            <div class="col-md-4 text-center"><strong>Authors</strong></div>
+            <div class="col-md-4 text-center"><strong>Authors/Artists</strong></div>
             <div class="col-md-4 text-center"><strong>Book/Album</strong></div>
         </div>
         <c:forEach var="result" items="${searchResult}">
