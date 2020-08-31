@@ -10,5 +10,5 @@ import lombok.Setter;
 @Setter
 public class BookDto {
     @JsonProperty
-    private BookInfoDto volumeInfo; // todo optimazi!!!
+    private BookInfoDto volumeInfo;
 }

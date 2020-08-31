@@ -1,7 +1,8 @@
 package com.idexx.demo.util;
 
-import com.idexx.demo.dto.SearchResultDto;
+import com.idexx.demo.dto.*;
 import com.idexx.demo.exception.SearchResultException;
+import org.apache.logging.log4j.util.Strings;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
@@ -67,11 +68,90 @@ public class UtilsTest {
     }
 
     @Test
-    void fromBookResultDto() {
+    void returnSearchResultDtoListFromBookResultDto() {
+        BookInfoDto bookInfoDto = new BookInfoDto();
+        List<String> authors = List.of("Author1", "Author2");
+        bookInfoDto.setAuthors(authors);
+        String title = SEARCH_TITLE;
+        bookInfoDto.setTitle(title);
+        BookDto bookDto = new BookDto();
+        bookDto.setVolumeInfo(bookInfoDto);
+        BookResultDto bookResultDto = new BookResultDto();
+        bookResultDto.setItems(List.of(bookDto));
+        bookResultDto.setTotalItems(1);
+
+        List<SearchResultDto> resultDtos = Utils.fromBookResultDto(bookResultDto);
+
+        assertEquals(1, resultDtos.size());
+        assertEquals(title, resultDtos.get(0).getTitle());
+        assertEquals(authors.toString().replace("[", Strings.EMPTY).replace("]", Strings.EMPTY),
+                resultDtos.get(0).getCreator());
+        assertEquals(SearchProduct.BOOK.name(), resultDtos.get(0).getProduct());
     }
 
     @Test
-    void fromAlbumResultDto() {
+    void returnEmptyListIfBookResultDtoIsEmpty() {
+        List<SearchResultDto> resultDtos = Utils.fromBookResultDto(new BookResultDto());
+        assertTrue(resultDtos.isEmpty());
+    }
+
+    @Test
+    void returnSearchResultDtoListWithNotAvailableFieldIfBookInfoDtoNotContainsAuthors() {
+        BookInfoDto bookInfoDto = new BookInfoDto();
+        String title = SEARCH_TITLE;
+        bookInfoDto.setTitle(title);
+        BookDto bookDto = new BookDto();
+        bookDto.setVolumeInfo(bookInfoDto);
+        BookResultDto bookResultDto = new BookResultDto();
+        bookResultDto.setItems(List.of(bookDto));
+        bookResultDto.setTotalItems(1);
+
+        List<SearchResultDto> resultDtos = Utils.fromBookResultDto(bookResultDto);
+
+        assertEquals(1, resultDtos.size());
+        assertEquals(title, resultDtos.get(0).getTitle());
+        assertEquals(Utils.NOT_AVAILABLE, resultDtos.get(0).getCreator());
+        assertEquals(SearchProduct.BOOK.name(), resultDtos.get(0).getProduct());
+    }
+
+    @Test
+    void returnSearchResultDtoListFromAlbumResultDto() {
+        AlbumDto albumDto = new AlbumDto();
+        String artistName = "artistName";
+        albumDto.setArtistName(artistName);
+        String trackName = "trackName";
+        albumDto.setTrackName(trackName);
+        AlbumResultDto albumResultDto = new AlbumResultDto();
+        albumResultDto.setResults(List.of(albumDto));
+
+        List<SearchResultDto> resultDtos = Utils.fromAlbumResultDto(albumResultDto);
+
+        assertEquals(1, resultDtos.size());
+        assertEquals(artistName, resultDtos.get(0).getCreator());
+        assertEquals(trackName, resultDtos.get(0).getTitle());
+        assertEquals(SearchProduct.ALBUM.name(), resultDtos.get(0).getProduct());
+    }
+
+    @Test
+    void returnEmptyListIfAlbumResultDtoIsEmpty() {
+        List<SearchResultDto> resultDtos = Utils.fromAlbumResultDto(new AlbumResultDto());
+        assertTrue(resultDtos.isEmpty());
+    }
+
+    @Test
+    void returnSearchResultDtoListWithNotAvailableFieldIfAlbumResultDtoNotContainsTrackName() {
+        AlbumDto albumDto = new AlbumDto();
+        String artistName = "artistName";
+        albumDto.setArtistName(artistName);
+        AlbumResultDto albumResultDto = new AlbumResultDto();
+        albumResultDto.setResults(List.of(albumDto));
+
+        List<SearchResultDto> resultDtos = Utils.fromAlbumResultDto(albumResultDto);
+
+        assertEquals(1, resultDtos.size());
+        assertEquals(artistName, resultDtos.get(0).getCreator());
+        assertEquals(Utils.NOT_AVAILABLE, resultDtos.get(0).getTitle());
+        assertEquals(SearchProduct.ALBUM.name(), resultDtos.get(0).getProduct());
     }
 
     public static SearchResultDto createSearchResultDto(int number) {
