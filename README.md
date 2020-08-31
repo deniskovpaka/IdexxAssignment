@@ -38,3 +38,4 @@ _Run_:
 - `docker run -d --name=prometheus -p 9090:9090 -v <PATH_TO_resource/prometheus.yml_FILE>:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml`
 - navigate to http://localhost:9090 to explore the Prometheus dashboard
 - run one of the command, like `http_server_requests_seconds_max{uri="/search"}`
+![Prometheus_example](https://github.com/deniskovpaka/IdexxAssignment/blob/master/src/main/resources/img/prometheus_example.png)
