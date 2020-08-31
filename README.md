@@ -21,7 +21,7 @@ In order to run it with the profile, use an additional parameter `-Dspring-boot.
 
 Example: `./mvnw spring-boot:run -Dspring-boot.run.profiles=dev`
 
-Go to http://localhost:8080
+Go to http://localhost:8080 (credentials: user/secret)
 
 #### To see Swagger documentation
 In your browser, open: http://localhost:8080/swagger-ui.html
