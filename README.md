@@ -29,10 +29,10 @@ In your browser, open: http://localhost:8080/swagger-ui.html
 - http://localhost:8080/actuator/health
 - http://localhost:8080/actuator/info
 
-#### Search API monitoring using Micrometer Prometheus Registry
+#### Search API monitoring using Micrometer Prometheus
 _Prerequisites_:
 - docker pull prom/prometheus
-- paste your local IP address instead of `192.168.0.102` in resources/promotheus.yml file the scrape_configs.static_configs.targets field
+- paste your local IP address instead of `192.168.0.102` in the resources/prometheus.yml file the scrape_configs.static_configs.targets field
 
 _Run_:
 - `docker run -d --name=prometheus -p 9090:9090 -v <PATH_TO_resource/prometheus.yml_FILE>:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml`
